@@ -21,7 +21,7 @@ public enum 五臟: String {
         case .肝:
             return .mu
         case .脾:
-            return .huo
+            return .tu
         case .肺:
             return .jin
         case .腎:
