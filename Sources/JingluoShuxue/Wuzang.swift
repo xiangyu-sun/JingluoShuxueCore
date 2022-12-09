@@ -7,7 +7,7 @@
 
 import ChineseAstrologyCalendar
 
-public enum 五臟: String {
+public enum 五臟: String, CaseIterable {
     case 肺
     case 脾
     case 心
