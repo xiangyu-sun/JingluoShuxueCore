@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import ChineseAstrologyCalendar
 
 public let 气血循环流注: [十二经脉] = [.手太陰肺经, .手阳明大腸经, .足阳明胃经, .足太陰脾经, .手少陰心经, .手太阳小腸经, .足太阳膀胱经, .足少陰腎经, .手厥陰心包经, .手少阳三焦经, .足少阳胆经, .足厥陰肝经]
 
@@ -40,8 +41,37 @@ public enum 十二经脉: String, 经络组成{
     case 足太阳膀胱经 = "足太阳膀胱经"
     case 足少阳胆经 = "足少阳胆经"
     
-    func 是阳吗() -> Bool {
+    public func 是阳吗() -> Bool {
         return self.rawValue.contains("阳")
+    }
+    
+    public var 五行: Wuxing? {
+        switch self {
+        case .手太陰肺经:
+            return .jin
+        case .手少陰心经:
+            return .huo
+        case .手厥陰心包经:
+            return nil
+        case .手阳明大腸经:
+            return .jin
+        case .手太阳小腸经:
+            return .huo
+        case .手少阳三焦经:
+            return nil
+        case .足太陰脾经:
+            return .tu
+        case .足少陰腎经:
+            return .shui
+        case .足厥陰肝经:
+            return .mu
+        case .足阳明胃经:
+            return .tu
+        case .足太阳膀胱经:
+            return .shui
+        case .足少阳胆经:
+            return .mu
+        }
     }
 }
 public enum 奇经八脉: String, 经络组成{
