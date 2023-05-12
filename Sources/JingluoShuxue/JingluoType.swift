@@ -11,6 +11,37 @@ import Foundation
 
 public let 气血循环流注: [十二经脉] = [.手太陰肺经, .手阳明大腸经, .足阳明胃经, .足太陰脾经, .手少陰心经, .手太阳小腸经, .足太阳膀胱经, .足少陰腎经, .手厥陰心包经, .手少阳三焦经, .足少阳胆经, .足厥陰肝经]
 
+extension Dizhi {
+  public var luizhu: 十二经脉 {
+    switch self {
+    case .zi:
+      return .足少阳胆经
+    case .chou:
+      return .足厥陰肝经
+    case .yin:
+      return .手太陰肺经
+    case .mao:
+      return .手阳明大腸经
+    case .chen:
+      return .足阳明胃经
+    case .si:
+      return .足太陰脾经
+    case .wu:
+      return .手少陰心经
+    case .wei:
+      return .手太阳小腸经
+    case .shen:
+      return .足太阳膀胱经
+    case .you:
+      return .足少陰腎经
+    case .xu:
+      return .手厥陰心包经
+    case .hai:
+      return .手少阳三焦经
+    }
+  }
+}
+
 public let 十四经脉: [经络组成] = [
   十二经脉.手太陰肺经,
   十二经脉.手阳明大腸经,
