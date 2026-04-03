@@ -2,11 +2,20 @@
   "object": {
     "pins": [
       {
+        "package": "Astral",
+        "repositoryURL": "https://github.com/xiangyu-sun/Astral.git",
+        "state": {
+          "branch": "main",
+          "revision": "e9d873f744021db6f69a06877562ee0ed1091360",
+          "version": null
+        }
+      },
+      {
         "package": "ChineseAstrologyCalendar",
-        "repositoryURL": "git@github.com:xiangyu-sun/ChineseAstrologyCalendar.git",
+        "repositoryURL": "https://github.com/xiangyu-sun/ChineseAstrologyCalendar.git",
         "state": {
           "branch": "master",
-          "revision": "47f024b78f56df5e5cc01b6a9dbdc8391211c382",
+          "revision": "d404e41af8fe401214b220f40679d04740deeb77",
           "version": null
         }
       },
@@ -26,6 +35,15 @@
           "branch": null,
           "revision": "fddd1c00396eed152c45a46bea9f47b98e59301d",
           "version": "1.2.0"
+        }
+      },
+      {
+        "package": "swift-numerics",
+        "repositoryURL": "https://github.com/apple/swift-numerics",
+        "state": {
+          "branch": null,
+          "revision": "0c0290ff6b24942dadb83a929ffaaa1481df04a2",
+          "version": "1.1.1"
         }
       }
     ]

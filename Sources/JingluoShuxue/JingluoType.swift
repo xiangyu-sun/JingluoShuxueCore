@@ -56,6 +56,7 @@ public let 十四经脉: [经络组成] = [
   十二经脉.足少阳胆经,
   十二经脉.足厥陰肝经,
   奇经八脉.督脉,
+  奇经八脉.任脉,
 ]
 
 // MARK: - 经络组成
@@ -92,34 +93,64 @@ public enum 十二经脉: String, 经络组成 {
   public var 五行: Wuxing? {
     switch self {
     case .手太陰肺经:
-      return .jin
+      return .metal
     case .手少陰心经:
-      return .huo
+      return .fire
     case .手厥陰心包经:
       return nil
     case .手阳明大腸经:
-      return .jin
+      return .metal
     case .手太阳小腸经:
-      return .huo
+      return .fire
     case .手少阳三焦经:
       return nil
     case .足太陰脾经:
-      return .tu
+      return .earth
     case .足少陰腎经:
-      return .shui
+      return .water
     case .足厥陰肝经:
-      return .mu
+      return .wood
     case .足阳明胃经:
-      return .tu
+      return .earth
     case .足太阳膀胱经:
-      return .shui
+      return .water
     case .足少阳胆经:
-      return .mu
+      return .wood
     }
   }
 
   public func 是阳吗() -> Bool {
     rawValue.contains("阳")
+  }
+
+  /// 循行部位 (meridian pathway regions)
+  public var 循行部位: [人体部位] {
+    switch self {
+    case .手太陰肺经:
+      return [.胸部, .上肢]
+    case .手少陰心经:
+      return [.胸部, .腋下, .上肢]
+    case .手厥陰心包经:
+      return [.胸部, .腋下, .上肢]
+    case .手阳明大腸经:
+      return [.上肢, .肩部, .颈部, .面额部]
+    case .手太阳小腸经:
+      return [.上肢, .肩胛部, .颈部, .颊部]
+    case .手少阳三焦经:
+      return [.上肢, .肩部, .颈部, .耳颞部]
+    case .足太陰脾经:
+      return [.下肢, .腹胸, .胸部]
+    case .足少陰腎经:
+      return [.下肢, .前腹部, .胸部]
+    case .足厥陰肝经:
+      return [.下肢, .前腹部, .肋部, .头顶]
+    case .足阳明胃经:
+      return [.头面, .颈部, .胸部, .腹胸, .下肢]
+    case .足太阳膀胱经:
+      return [.头后部, .枕项部, .背部, .下肢]
+    case .足少阳胆经:
+      return [.头面, .耳颞部, .侧部, .肋部, .下肢]
+    }
   }
 }
 
@@ -164,4 +195,11 @@ public enum 人体部位 {
   case 上肢
   case 下肢
   case 颌部
+  case 颈部
+  // 五官 (sensory orifices)
+  case 鼻
+  case 口
+  case 舌
+  case 目
+  case 耳
 }

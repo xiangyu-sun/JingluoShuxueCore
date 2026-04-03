@@ -15,7 +15,7 @@ let package = Package(
   dependencies: [
     // Dependencies declare other packages that this package depends on.
     .package(url: "https://github.com/airbnb/swift", from: "1.0.0"),
-    .package(url: "git@github.com:xiangyu-sun/ChineseAstrologyCalendar.git", .branchItem("master"))
+    .package(url: "https://github.com/xiangyu-sun/ChineseAstrologyCalendar.git", .branchItem("master"))
   ],
   targets: [
     // Targets are the basic building blocks of a package. A target can define a module or a test suite.
