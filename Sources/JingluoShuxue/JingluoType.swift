@@ -261,8 +261,15 @@ public enum 十二经脉: String, CaseIterable, Hashable, Codable, 经络组成 
     }
   }
 
-  /// 表裏經 — interior-exterior paired meridian
-  public var 表里经: 十二经脉 {
+  /// 是表經 — true if this is a yang (exterior/表) meridian; false if yin (interior/裏).
+  public var 是表经: Bool { 是阳吗() }
+
+  /// 是裏經 — true if this is a yin (interior/裏) meridian; false if yang (exterior/表).
+  public var 是里经: Bool { !是阳吗() }
+
+  /// 相表裏經 — the paired interior-exterior meridian.
+  /// Yang meridians return their yin partner and vice versa.
+  public var 相表里经: 十二经脉 {
     switch self {
     case .手太陰肺经:   return .手阳明大腸经
     case .手阳明大腸经: return .手太陰肺经
@@ -278,6 +285,11 @@ public enum 十二经脉: String, CaseIterable, Hashable, Codable, 经络组成 
     case .足厥陰肝经:   return .足少阳胆经
     }
   }
+
+  /// 表里经 — the paired interior-exterior meridian.
+  /// - Note: Deprecated. Use `相表裏經` instead for clarity.
+  @available(*, deprecated, renamed: "相表里经")
+  public var 表里经: 十二经脉 { 相表里经 }
 
   /// 募穴 — front-mu alarm point (on the chest/abdomen)
   public var 募穴: String {
