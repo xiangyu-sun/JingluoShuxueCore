@@ -40,6 +40,24 @@ extension Dizhi {
       return .手少阳三焦经
     }
   }
+
+  /// Clock-hour range during which qi peaks in the associated meridian (24-hour format).
+  public var 流注時辰: ClosedRange<Int> {
+    switch self {
+    case .zi:  return 23...24  // 子 23:00–01:00 (represented as 23–24 + wraps to 0–1)
+    case .chou: return 1...3
+    case .yin:  return 3...5
+    case .mao:  return 5...7
+    case .chen: return 7...9
+    case .si:   return 9...11
+    case .wu:   return 11...13
+    case .wei:  return 13...15
+    case .shen: return 15...17
+    case .you:  return 17...19
+    case .xu:   return 19...21
+    case .hai:  return 21...23
+    }
+  }
 }
 
 public let 十四经脉: [经络组成] = [
@@ -68,7 +86,7 @@ public protocol 经络组成 { }
 /// Details of the five shu-transporting points (五輸穴) for a meridian.
 /// 井 (jǐng) well — distal tip; 滎 (yíng) spring; 輸 (shū) stream;
 /// 經 (jīng) river; 合 (hé) sea — near the elbow/knee.
-public struct 五输穴详情: Equatable {
+public struct 五输穴详情: Equatable, Hashable, Codable {
   public let 井: String
   public let 荥: String
   public let 输: String
@@ -84,6 +102,33 @@ public struct 五输穴详情: Equatable {
   }
 }
 
+// MARK: - 八會穴
+
+/// The eight influential/meeting points (八會穴), each dominating a particular tissue or substance.
+public enum 八會穴: String, CaseIterable, Hashable, Codable {
+  case 臟會 = "章門 (LR13)"   // influential point of zang organs
+  case 腑會 = "中脘 (CV12)"   // influential point of fu organs
+  case 氣會 = "膻中 (CV17)"   // influential point of qi
+  case 血會 = "膈俞 (BL17)"   // influential point of blood
+  case 筋會 = "陽陵泉 (GB34)" // influential point of sinews
+  case 脈會 = "太淵 (LU9)"    // influential point of vessels/pulse
+  case 骨會 = "大杼 (BL11)"   // influential point of bone
+  case 髓會 = "懸鐘 (GB39)"   // influential point of marrow
+
+  public var description: String {
+    switch self {
+    case .臟會: return "臟之會穴，治五臟疾患"
+    case .腑會: return "腑之會穴，治六腑疾患"
+    case .氣會: return "氣之會穴，治氣機失調"
+    case .血會: return "血之會穴，治血證"
+    case .筋會: return "筋之會穴，治筋骨痿痹"
+    case .脈會: return "脈之會穴，治脈管疾患"
+    case .骨會: return "骨之會穴，治骨病"
+    case .髓會: return "髓之會穴，治髓海不足"
+    }
+  }
+}
+
 // MARK: - 十二经脉
 
 //    case 十二经别
@@ -95,7 +140,7 @@ public struct 五输穴详情: Equatable {
 //    case 浮络
 //    case 孙络
 
-public enum 十二经脉: String, CaseIterable, 经络组成 {
+public enum 十二经脉: String, CaseIterable, Hashable, Codable, 经络组成 {
   case 手太陰肺经
   case 手少陰心经
   case 手厥陰心包经
@@ -111,32 +156,56 @@ public enum 十二经脉: String, CaseIterable, 经络组成 {
 
   // MARK: Public
 
+  /// English name of the meridian.
+  public var englishName: String {
+    switch self {
+    case .手太陰肺经:   return "Lung Meridian"
+    case .手少陰心经:   return "Heart Meridian"
+    case .手厥陰心包经: return "Pericardium Meridian"
+    case .手阳明大腸经: return "Large Intestine Meridian"
+    case .手太阳小腸经: return "Small Intestine Meridian"
+    case .手少阳三焦经: return "Triple Burner Meridian"
+    case .足太陰脾经:   return "Spleen Meridian"
+    case .足少陰腎经:   return "Kidney Meridian"
+    case .足厥陰肝经:   return "Liver Meridian"
+    case .足阳明胃经:   return "Stomach Meridian"
+    case .足太阳膀胱经: return "Bladder Meridian"
+    case .足少阳胆经:   return "Gallbladder Meridian"
+    }
+  }
+
+  /// Standard international abbreviation (WHO).
+  public var abbreviation: String {
+    switch self {
+    case .手太陰肺经:   return "LU"
+    case .手少陰心经:   return "HT"
+    case .手厥陰心包经: return "PC"
+    case .手阳明大腸经: return "LI"
+    case .手太阳小腸经: return "SI"
+    case .手少阳三焦经: return "TE"
+    case .足太陰脾经:   return "SP"
+    case .足少陰腎经:   return "KI"
+    case .足厥陰肝经:   return "LR"
+    case .足阳明胃经:   return "ST"
+    case .足太阳膀胱经: return "BL"
+    case .足少阳胆经:   return "GB"
+    }
+  }
+
   public var 五行: Wuxing? {
     switch self {
-    case .手太陰肺经:
-      return .metal
-    case .手少陰心经:
-      return .fire
-    case .手厥陰心包经:
-      return nil
-    case .手阳明大腸经:
-      return .metal
-    case .手太阳小腸经:
-      return .fire
-    case .手少阳三焦经:
-      return nil
-    case .足太陰脾经:
-      return .earth
-    case .足少陰腎经:
-      return .water
-    case .足厥陰肝经:
-      return .wood
-    case .足阳明胃经:
-      return .earth
-    case .足太阳膀胱经:
-      return .water
-    case .足少阳胆经:
-      return .wood
+    case .手太陰肺经:   return .metal
+    case .手少陰心经:   return .fire
+    case .手厥陰心包经: return nil
+    case .手阳明大腸经: return .metal
+    case .手太阳小腸经: return .fire
+    case .手少阳三焦经: return nil
+    case .足太陰脾经:   return .earth
+    case .足少陰腎经:   return .water
+    case .足厥陰肝经:   return .wood
+    case .足阳明胃经:   return .earth
+    case .足太阳膀胱经: return .water
+    case .足少阳胆经:   return .wood
     }
   }
 
@@ -207,6 +276,42 @@ public enum 十二经脉: String, CaseIterable, 经络组成 {
     case .手少阳三焦经: return .手厥陰心包经
     case .足少阳胆经:   return .足厥陰肝经
     case .足厥陰肝经:   return .足少阳胆经
+    }
+  }
+
+  /// 募穴 — front-mu alarm point (on the chest/abdomen)
+  public var 募穴: String {
+    switch self {
+    case .手太陰肺经:   return "中府 (LU1)"
+    case .手少陰心经:   return "巨闕 (CV14)"
+    case .手厥陰心包经: return "膻中 (CV17)"
+    case .手阳明大腸经: return "天樞 (ST25)"
+    case .手太阳小腸经: return "關元 (CV4)"
+    case .手少阳三焦经: return "石門 (CV5)"
+    case .足太陰脾经:   return "章門 (LR13)"
+    case .足少陰腎经:   return "京門 (GB25)"
+    case .足厥陰肝经:   return "期門 (LR14)"
+    case .足阳明胃经:   return "中脘 (CV12)"
+    case .足太阳膀胱经: return "中極 (CV3)"
+    case .足少阳胆经:   return "日月 (GB24)"
+    }
+  }
+
+  /// 背俞穴 — back-shu transport point (on the bladder meridian of the back)
+  public var 背俞穴: String {
+    switch self {
+    case .手太陰肺经:   return "肺俞 (BL13)"
+    case .手少陰心经:   return "心俞 (BL15)"
+    case .手厥陰心包经: return "厥陰俞 (BL14)"
+    case .手阳明大腸经: return "大腸俞 (BL25)"
+    case .手太阳小腸经: return "小腸俞 (BL27)"
+    case .手少阳三焦经: return "三焦俞 (BL22)"
+    case .足太陰脾经:   return "脾俞 (BL20)"
+    case .足少陰腎经:   return "腎俞 (BL23)"
+    case .足厥陰肝经:   return "肝俞 (BL18)"
+    case .足阳明胃经:   return "胃俞 (BL21)"
+    case .足太阳膀胱经: return "膀胱俞 (BL28)"
+    case .足少阳胆经:   return "膽俞 (BL19)"
     }
   }
 
@@ -353,6 +458,52 @@ public enum 十二经脉: String, CaseIterable, 经络组成 {
       return 五输穴详情(井: "足竅陰 (GB44)", 荥: "俠溪 (GB43)", 输: "足臨泣 (GB41)", 经: "陽輔 (GB38)", 合: "陽陵泉 (GB34)")
     }
   }
+
+  /// 五輸穴五行 — wuxing attributed to each of the five shu points.
+  /// Yin meridians follow 木火土金水; Yang meridians follow 金水木火土.
+  public var 五输穴五行: (井: Wuxing, 荥: Wuxing, 输: Wuxing, 经: Wuxing, 合: Wuxing) {
+    if 是阳吗() {
+      return (井: .metal, 荥: .water, 输: .wood, 经: .fire, 合: .earth)
+    } else {
+      return (井: .wood, 荥: .fire, 输: .earth, 经: .metal, 合: .water)
+    }
+  }
+
+  /// 補穴 — tonification point (母穴, derived from five-element mother-child law)
+  public var 補穴: String {
+    switch self {
+    case .手太陰肺经:   return "太淵 (LU9)"   // earth → metal
+    case .手少陰心经:   return "少衝 (HT9)"   // wood → fire
+    case .手厥陰心包经: return "中衝 (PC9)"   // wood → fire
+    case .手阳明大腸经: return "曲池 (LI11)"  // earth → metal
+    case .手太阳小腸经: return "後溪 (SI3)"   // wood → fire
+    case .手少阳三焦经: return "中渚 (TE3)"   // wood → fire
+    case .足太陰脾经:   return "大都 (SP2)"   // fire → earth
+    case .足少陰腎经:   return "復溜 (KI7)"   // metal → water
+    case .足厥陰肝经:   return "曲泉 (LR8)"   // water → wood
+    case .足阳明胃经:   return "解溪 (ST41)"  // fire → earth
+    case .足太阳膀胱经: return "至陰 (BL67)"  // metal → water
+    case .足少阳胆经:   return "俠溪 (GB43)"  // water → wood
+    }
+  }
+
+  /// 瀉穴 — sedation point (子穴, derived from five-element mother-child law)
+  public var 瀉穴: String {
+    switch self {
+    case .手太陰肺经:   return "尺澤 (LU5)"   // metal → water
+    case .手少陰心经:   return "神門 (HT7)"   // fire → earth
+    case .手厥陰心包经: return "大陵 (PC7)"   // fire → earth
+    case .手阳明大腸经: return "二間 (LI2)"   // metal → water
+    case .手太阳小腸经: return "小海 (SI8)"   // fire → earth
+    case .手少阳三焦经: return "天井 (TE10)"  // fire → earth
+    case .足太陰脾经:   return "商丘 (SP5)"   // earth → metal
+    case .足少陰腎经:   return "湧泉 (KI1)"   // water → wood
+    case .足厥陰肝经:   return "行間 (LR2)"   // wood → fire
+    case .足阳明胃经:   return "厲兌 (ST45)"  // earth → metal
+    case .足太阳膀胱经: return "束骨 (BL65)"  // water → wood
+    case .足少阳胆经:   return "陽輔 (GB38)"  // wood → fire
+    }
+  }
 }
 
 // MARK: - 十二经脉 Extensions
@@ -379,7 +530,7 @@ extension 十二经脉 {
 
 // MARK: - 奇经八脉
 
-public enum 奇经八脉: String, 经络组成 {
+public enum 奇经八脉: String, Hashable, Codable, 经络组成 {
   case 督脉
   case 任脉
   case 冲脉
@@ -392,7 +543,7 @@ public enum 奇经八脉: String, 经络组成 {
 
 // MARK: - 人体部位
 
-public enum 人体部位 {
+public enum 人体部位: Hashable, Codable {
   case 头面
   case 面额部
   case 颊部
