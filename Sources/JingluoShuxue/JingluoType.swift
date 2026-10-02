@@ -79,14 +79,14 @@ public let 十四经脉: [经络组成] = [
 
 // MARK: - 经络组成
 
-public protocol 经络组成 { }
+public protocol 经络组成: Sendable { }
 
 // MARK: - 五輸穴詳情
 
 /// Details of the five shu-transporting points (五輸穴) for a meridian.
 /// 井 (jǐng) well — distal tip; 滎 (yíng) spring; 輸 (shū) stream;
 /// 經 (jīng) river; 合 (hé) sea — near the elbow/knee.
-public struct 五输穴详情: Equatable, Hashable, Codable {
+public struct 五输穴详情: Equatable, Hashable, Codable, Sendable {
   public let 井: String
   public let 荥: String
   public let 输: String
@@ -105,7 +105,7 @@ public struct 五输穴详情: Equatable, Hashable, Codable {
 // MARK: - 八會穴
 
 /// The eight influential/meeting points (八會穴), each dominating a particular tissue or substance.
-public enum 八會穴: String, CaseIterable, Hashable, Codable {
+public enum 八會穴: String, CaseIterable, Hashable, Codable, Sendable {
   case 臟會 = "章門 (LR13)"   // influential point of zang organs
   case 腑會 = "中脘 (CV12)"   // influential point of fu organs
   case 氣會 = "膻中 (CV17)"   // influential point of qi
@@ -542,20 +542,76 @@ extension 十二经脉 {
 
 // MARK: - 奇经八脉
 
-public enum 奇经八脉: String, Hashable, Codable, 经络组成 {
+/// The eight extraordinary vessels (奇經八脈).
+public enum 奇经八脉: String, CaseIterable, Hashable, 经络组成 {
   case 督脉
   case 任脉
   case 冲脉
-  case 代脉
+  case 带脉
   case 陰维脉
   case 阳维脉
-  case 陰脉
-  case 阳脉
+  case 陰蹺脉
+  case 阳蹺脉
+
+  /// Standard English name of the vessel.
+  public var englishName: String {
+    switch self {
+    case .督脉:   return "Governing Vessel"
+    case .任脉:   return "Conception Vessel"
+    case .冲脉:   return "Penetrating Vessel"
+    case .带脉:   return "Belt Vessel"
+    case .陰维脉: return "Yin Linking Vessel"
+    case .阳维脉: return "Yang Linking Vessel"
+    case .陰蹺脉: return "Yin Heel Vessel"
+    case .阳蹺脉: return "Yang Heel Vessel"
+    }
+  }
+
+  // MARK: Deprecated
+
+  /// Misspelling of ``带脉`` (帶脈, the Belt Vessel).
+  @available(*, deprecated, renamed: "带脉")
+  public static var 代脉: 奇经八脉 { .带脉 }
+
+  /// Incomplete name for ``陰蹺脉`` (陰蹺脈, the Yin Heel Vessel).
+  @available(*, deprecated, renamed: "陰蹺脉")
+  public static var 陰脉: 奇经八脉 { .陰蹺脉 }
+
+  /// Incomplete name for ``阳蹺脉`` (陽蹺脈, the Yang Heel Vessel).
+  @available(*, deprecated, renamed: "阳蹺脉")
+  public static var 阳脉: 奇经八脉 { .阳蹺脉 }
+}
+
+// MARK: - 奇经八脉 + Codable
+
+extension 奇经八脉: Codable {
+  /// Raw values written by versions before 1.1.0, which misnamed three vessels.
+  private static let legacyRawValues: [String: 奇经八脉] = [
+    "代脉": .带脉,
+    "陰脉": .陰蹺脉,
+    "阳脉": .阳蹺脉,
+  ]
+
+  public init(from decoder: Decoder) throws {
+    let container = try decoder.singleValueContainer()
+    let raw = try container.decode(String.self)
+    guard let value = 奇经八脉(rawValue: raw) ?? Self.legacyRawValues[raw] else {
+      throw DecodingError.dataCorruptedError(
+        in: container,
+        debugDescription: "Unknown 奇经八脉 raw value \(raw)")
+    }
+    self = value
+  }
+
+  public func encode(to encoder: Encoder) throws {
+    var container = encoder.singleValueContainer()
+    try container.encode(rawValue)
+  }
 }
 
 // MARK: - 人体部位
 
-public enum 人体部位: Hashable, Codable {
+public enum 人体部位: Hashable, Codable, Sendable {
   case 头面
   case 面额部
   case 颊部

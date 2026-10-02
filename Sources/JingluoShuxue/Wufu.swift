@@ -9,7 +9,7 @@ import ChineseAstrologyCalendar
 /// 六腑 — the six hollow organs (五腑 + 三焦).
 /// 三焦 has no direct wuxing or paired zang in the traditional five-element sense,
 /// but is paired with 心包 via the meridian system.
-public enum 六腑: String, CaseIterable, Hashable, Codable {
+public enum 六腑: String, CaseIterable, Hashable, Codable, Sendable {
   case 膀胱
   case 小腸
   case 胃

@@ -6,7 +6,7 @@
 
 import ChineseAstrologyCalendar
 
-public enum 五臟: String, CaseIterable, Hashable, Codable {
+public enum 五臟: String, CaseIterable, Hashable, Codable, Sendable {
   case 肺
   case 脾
   case 心
@@ -142,6 +142,17 @@ public enum 五臟: String, CaseIterable, Hashable, Codable {
     case .心: return "夏"
     case .肝: return "春"
     case .腎: return "冬"
+    }
+  }
+
+  /// 五方 as a typed ``FangWei`` direction.
+  public var fangwei: FangWei {
+    switch self {
+    case .肺: return .west
+    case .脾: return .center
+    case .心: return .south
+    case .肝: return .east
+    case .腎: return .north
     }
   }
 
