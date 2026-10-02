@@ -12,7 +12,7 @@ extension 十二经脉: LocalizedNaming {
     switch language {
     case .zhHant: return traditionalChineseName
     case .zhHans: return simplifiedChineseName
-    case .en: return englishName
+    default: return englishName
     }
   }
 
@@ -57,7 +57,7 @@ extension 奇经八脉: LocalizedNaming {
     switch language {
     case .zhHant: return traditionalChineseName
     case .zhHans: return simplifiedChineseName
-    case .en: return englishName
+    default: return englishName
     }
   }
 
@@ -94,7 +94,7 @@ extension 五臟: LocalizedNaming {
     switch language {
     case .zhHant: return rawValue
     case .zhHans: return self == .腎 ? "肾" : rawValue
-    case .en: return englishName
+    default: return englishName
     }
   }
 
@@ -122,7 +122,7 @@ extension 六腑: LocalizedNaming {
       case .膽: return "胆"
       default: return rawValue
       }
-    case .en:
+    default:
       return englishName
     }
   }

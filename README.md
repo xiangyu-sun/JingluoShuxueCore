@@ -15,7 +15,7 @@ Traditional Chinese Medicine meridian data (經絡) built on
 ## Installation
 
 ```swift
-.package(url: "https://github.com/xiangyu-sun/JingluoShuxueCore.git", from: "1.1.0")
+.package(url: "https://github.com/xiangyu-sun/JingluoShuxueCore.git", from: "1.2.0")
 ```
 
 ## Localization
@@ -29,4 +29,5 @@ Meridians, vessels and organs adopt ChineseAstrologyCalendar's `LocalizedNaming`
 五臟.腎.localizedName(in: .en)                   // "Kidney"
 ```
 
-Clinical text (functions, indications, emotions) stays in Traditional Chinese.
+Other languages (Russian, Spanish) use the English names. Clinical text (functions,
+indications, emotions) stays in Traditional Chinese.

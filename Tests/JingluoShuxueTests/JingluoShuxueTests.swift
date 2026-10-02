@@ -39,6 +39,9 @@ import Testing
     #expect(五臟.腎.localizedName(in: .en) == "Kidney")
     #expect(六腑.膽.localizedName(in: .zhHans) == "胆")
     #expect(六腑.三焦.localizedName(in: .en) == "Triple Burner")
+    // Languages without their own text fall back to English.
+    #expect(十二经脉.足少陰腎经.localizedName(in: .ru) == "Kidney Meridian")
+    #expect(奇经八脉.带脉.localizedName(in: .es) == "Belt Vessel")
   }
 
   @Test func fangweiMatchesFiveDirections() {

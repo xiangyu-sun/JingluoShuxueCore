@@ -1,5 +1,5 @@
 {
-  "originHash" : "c2132b392e315330a670d0e62c6024ad7ed0876de676f33ce405152fd6c7d5e7",
+  "originHash" : "61bb778b1e7886fb7ead3aed00f7e4852396092bd5d6f5256f2103339ed0ceed",
   "pins" : [
     {
       "identity" : "astral",
@@ -15,8 +15,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/xiangyu-sun/ChineseAstrologyCalendar.git",
       "state" : {
-        "revision" : "97c6075f92d3e2476fc473bdd9b0926c22b4b72c",
-        "version" : "3.2.0"
+        "revision" : "ace49f4624bf70789e46b04b0088595914a6d7bc",
+        "version" : "4.0.0"
       }
     },
     {
@@ -24,8 +24,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/airbnb/swift",
       "state" : {
-        "revision" : "07bb2e0822ca6e464bf3610ed452568931fdbf65",
-        "version" : "1.0.3"
+        "revision" : "6c09dd57c2254b14bb48c15e209ed6e93058104f",
+        "version" : "1.2.0"
       }
     },
     {
@@ -33,8 +33,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-argument-parser",
       "state" : {
-        "revision" : "fddd1c00396eed152c45a46bea9f47b98e59301d",
-        "version" : "1.2.0"
+        "revision" : "6a52f3251125d74daf04fcbd5e6f08a75d074382",
+        "version" : "1.8.2"
       }
     },
     {
