@@ -1,13 +1,13 @@
 {
-  "originHash" : "61bb778b1e7886fb7ead3aed00f7e4852396092bd5d6f5256f2103339ed0ceed",
+  "originHash" : "aa5ffcb4d97a34840a56a1997da09cb16bd33b122f2532ac3851958790237636",
   "pins" : [
     {
       "identity" : "astral",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/xiangyu-sun/Astral.git",
       "state" : {
-        "revision" : "e9d873f744021db6f69a06877562ee0ed1091360",
-        "version" : "1.2.0"
+        "revision" : "bd1b054232dea5dd9dcf0f6b892b80f81733126d",
+        "version" : "1.4.0"
       }
     },
     {
@@ -15,8 +15,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/xiangyu-sun/ChineseAstrologyCalendar.git",
       "state" : {
-        "revision" : "ace49f4624bf70789e46b04b0088595914a6d7bc",
-        "version" : "4.0.0"
+        "revision" : "9d12a415d711bbbf3ac6596ec93cf0658f3a2ad0",
+        "version" : "4.3.1"
       }
     },
     {
