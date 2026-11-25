@@ -15,7 +15,7 @@ Traditional Chinese Medicine meridian data (經絡) built on
 ## Installation
 
 ```swift
-.package(url: "https://github.com/xiangyu-sun/JingluoShuxueCore.git", from: "1.2.0")
+.package(url: "https://github.com/xiangyu-sun/JingluoShuxueCore.git", from: "1.3.0")
 ```
 
 ## Localization
@@ -26,8 +26,13 @@ Meridians, vessels and organs adopt ChineseAstrologyCalendar's `LocalizedNaming`
 十二经脉.手阳明大腸经.localizedName(in: .zhHant)  // "手陽明大腸經"
 十二经脉.手阳明大腸经.localizedName(in: .zhHans)  // "手阳明大肠经"
 十二经脉.手阳明大腸经.localizedName(in: .en)      // "Large Intestine Meridian"
+十二经脉.手阳明大腸经.localizedName(in: .es)      // "Meridiano del Intestino Grueso"
+十二经脉.手阳明大腸经.localizedOrganName(in: .es) // "Intestino Grueso"
 五臟.腎.localizedName(in: .en)                   // "Kidney"
+五臟.腎.localizedName(in: .es)                   // "Riñón"
 ```
 
-Other languages (Russian, Spanish) use the English names. Clinical text (functions,
-indications, emotions) stays in Traditional Chinese.
+Names are available in Traditional Chinese, Simplified Chinese, English and Spanish;
+Russian uses the English names. `localizedOrganName(in:)` gives a meridian's organ
+alone, for places too narrow for the full name. Clinical text (functions, indications,
+emotions) stays in Traditional Chinese.

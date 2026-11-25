@@ -4,15 +4,31 @@ import ChineseAstrologyCalendar
 //
 // Case names mix scripts for historical reasons (手阳明大腸经). These
 // conformances give each script a consistent spelling: 手陽明大腸經 in
-// Traditional Chinese, 手阳明大肠经 in Simplified Chinese. Clinical prose
-// (主要功能, 主治病症, 情緒 …) intentionally stays in Traditional Chinese.
+// Traditional Chinese, 手阳明大肠经 in Simplified Chinese. Spanish names follow
+// Traditional Chinese Medicine usage; other languages without their own text
+// use the English names. Clinical prose (主要功能, 主治病症, 情緒 …)
+// intentionally stays in Traditional Chinese.
 
 extension 十二经脉: LocalizedNaming {
   public func localizedName(in language: DisplayLanguage) -> String {
     switch language {
     case .zhHant: return traditionalChineseName
     case .zhHans: return simplifiedChineseName
+    case .es: return spanishName
     default: return englishName
+    }
+  }
+
+  /// The name of the meridian's organ alone, e.g. 大腸, "Large Intestine" or
+  /// "Intestino Grueso", for places too narrow for the full meridian name.
+  public func localizedOrganName(in language: DisplayLanguage) -> String {
+    if let zang = 五臟(rawValue: organReference) { return zang.localizedName(in: language) }
+    if let fu = 六腑(rawValue: organReference) { return fu.localizedName(in: language) }
+    // 心包 is the one meridian organ that is neither of the 五臟 nor the 六腑.
+    switch language {
+    case .zhHant, .zhHans: return organReference
+    case .es: return "Pericardio"
+    default: return "Pericardium"
     }
   }
 
@@ -50,6 +66,23 @@ extension 十二经脉: LocalizedNaming {
     case .足少阳胆经:   return "足少阳胆经"
     }
   }
+
+  private var spanishName: String {
+    switch self {
+    case .手太陰肺经:   return "Meridiano del Pulmón"
+    case .手少陰心经:   return "Meridiano del Corazón"
+    case .手厥陰心包经: return "Meridiano del Pericardio"
+    case .手阳明大腸经: return "Meridiano del Intestino Grueso"
+    case .手太阳小腸经: return "Meridiano del Intestino Delgado"
+    case .手少阳三焦经: return "Meridiano del Triple Calentador"
+    case .足太陰脾经:   return "Meridiano del Bazo"
+    case .足少陰腎经:   return "Meridiano del Riñón"
+    case .足厥陰肝经:   return "Meridiano del Hígado"
+    case .足阳明胃经:   return "Meridiano del Estómago"
+    case .足太阳膀胱经: return "Meridiano de la Vejiga"
+    case .足少阳胆经:   return "Meridiano de la Vesícula Biliar"
+    }
+  }
 }
 
 extension 奇经八脉: LocalizedNaming {
@@ -57,6 +90,7 @@ extension 奇经八脉: LocalizedNaming {
     switch language {
     case .zhHant: return traditionalChineseName
     case .zhHans: return simplifiedChineseName
+    case .es: return spanishName
     default: return englishName
     }
   }
@@ -87,6 +121,19 @@ extension 奇经八脉: LocalizedNaming {
     case .阳蹺脉: return "阳跷脉"
     }
   }
+
+  private var spanishName: String {
+    switch self {
+    case .督脉:   return "Vaso Gobernador"
+    case .任脉:   return "Vaso Concepción"
+    case .冲脉:   return "Vaso Penetrante"
+    case .带脉:   return "Vaso Cinturón"
+    case .陰维脉: return "Vaso de Enlace Yin"
+    case .阳维脉: return "Vaso de Enlace Yang"
+    case .陰蹺脉: return "Vaso del Talón Yin"
+    case .阳蹺脉: return "Vaso del Talón Yang"
+    }
+  }
 }
 
 extension 五臟: LocalizedNaming {
@@ -94,6 +141,7 @@ extension 五臟: LocalizedNaming {
     switch language {
     case .zhHant: return rawValue
     case .zhHans: return self == .腎 ? "肾" : rawValue
+    case .es: return spanishName
     default: return englishName
     }
   }
@@ -106,6 +154,16 @@ extension 五臟: LocalizedNaming {
     case .心: return "Heart"
     case .肝: return "Liver"
     case .腎: return "Kidney"
+    }
+  }
+
+  private var spanishName: String {
+    switch self {
+    case .肺: return "Pulmón"
+    case .脾: return "Bazo"
+    case .心: return "Corazón"
+    case .肝: return "Hígado"
+    case .腎: return "Riñón"
     }
   }
 }
@@ -122,6 +180,8 @@ extension 六腑: LocalizedNaming {
       case .膽: return "胆"
       default: return rawValue
       }
+    case .es:
+      return spanishName
     default:
       return englishName
     }
@@ -136,6 +196,17 @@ extension 六腑: LocalizedNaming {
     case .大腸: return "Large Intestine"
     case .膽: return "Gallbladder"
     case .三焦: return "Triple Burner"
+    }
+  }
+
+  private var spanishName: String {
+    switch self {
+    case .膀胱: return "Vejiga"
+    case .小腸: return "Intestino Delgado"
+    case .胃: return "Estómago"
+    case .大腸: return "Intestino Grueso"
+    case .膽: return "Vesícula Biliar"
+    case .三焦: return "Triple Calentador"
     }
   }
 }

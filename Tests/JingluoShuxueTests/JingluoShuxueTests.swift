@@ -41,7 +41,7 @@ import Testing
     #expect(六腑.三焦.localizedName(in: .en) == "Triple Burner")
     // Languages without their own text fall back to English.
     #expect(十二经脉.足少陰腎经.localizedName(in: .ru) == "Kidney Meridian")
-    #expect(奇经八脉.带脉.localizedName(in: .es) == "Belt Vessel")
+    #expect(奇经八脉.带脉.localizedName(in: .ru) == "Belt Vessel")
   }
 
   @Test func fangweiMatchesFiveDirections() {
@@ -71,5 +71,83 @@ import Testing
   @Test func roundTripsCurrentRawValues() throws {
     let data = try JSONEncoder().encode(奇经八脉.allCases)
     #expect(try JSONDecoder().decode([奇经八脉].self, from: data) == 奇经八脉.allCases)
+  }
+}
+
+@Suite struct LocalizationCoverageTests {
+
+  /// Every localized display name the package renders, in the given language.
+  private static func names(in language: DisplayLanguage) -> [String: [String]] {
+    [
+      "十二经脉": 十二经脉.allCases.map { $0.localizedName(in: language) },
+      "十二经脉 organ": 十二经脉.allCases.map { $0.localizedOrganName(in: language) },
+      "奇经八脉": 奇经八脉.allCases.map { $0.localizedName(in: language) },
+      "五臟": 五臟.allCases.map { $0.localizedName(in: language) },
+      "六腑": 六腑.allCases.map { $0.localizedName(in: language) },
+    ]
+  }
+
+  @Test(arguments: DisplayLanguage.allCases)
+  func everyNameIsNonEmptyAndDistinct(language: DisplayLanguage) {
+    for (type, names) in Self.names(in: language) {
+      #expect(names.allSatisfy { !$0.isEmpty }, "\(type)")
+      #expect(Set(names).count == names.count, "\(type)")
+    }
+  }
+
+  @Test func spanishDoesNotFallBackToEnglish() {
+    // Names that really are spelled the same in both languages. None so far.
+    let sameAsEnglish: Set<String> = []
+    let english = Self.names(in: .en)
+    for (type, names) in Self.names(in: .es) {
+      for (spanish, fallback) in zip(names, english[type] ?? []) where !sameAsEnglish.contains(spanish) {
+        #expect(spanish != fallback, "\(type)")
+      }
+    }
+  }
+
+  @Test(arguments: [DisplayLanguage.en, .ru, .es])
+  func nonChineseNamesContainNoHanCharacters(language: DisplayLanguage) {
+    for (type, names) in Self.names(in: language) {
+      for name in names {
+        #expect(!name.unicodeScalars.contains { $0.properties.isIdeographic }, "\(type): \(name)")
+      }
+    }
+  }
+
+  @Test func spanishNames() {
+    #expect(十二经脉.手太陰肺经.localizedName(in: .es) == "Meridiano del Pulmón")
+    #expect(十二经脉.手少阳三焦经.localizedName(in: .es) == "Meridiano del Triple Calentador")
+    #expect(十二经脉.足太阳膀胱经.localizedName(in: .es) == "Meridiano de la Vejiga")
+    #expect(十二经脉.足少阳胆经.localizedName(in: .es) == "Meridiano de la Vesícula Biliar")
+    #expect(奇经八脉.督脉.localizedName(in: .es) == "Vaso Gobernador")
+    #expect(奇经八脉.任脉.localizedName(in: .es) == "Vaso Concepción")
+    #expect(奇经八脉.陰蹺脉.localizedName(in: .es) == "Vaso del Talón Yin")
+    #expect(五臟.腎.localizedName(in: .es) == "Riñón")
+    #expect(六腑.膽.localizedName(in: .es) == "Vesícula Biliar")
+    #expect(六腑.三焦.localizedName(in: .es) == "Triple Calentador")
+    // The identifier an app passes for a regional Spanish locale.
+    #expect(五臟.肝.localizedName(in: DisplayLanguage(identifier: "es-MX")) == "Hígado")
+  }
+
+  /// Like the English "Lung Meridian", a Spanish meridian name is only the organ
+  /// and the word for meridian: "del" or "de la" according to the organ's gender.
+  @Test func spanishMeridianNamesAreMeridianPlusOrgan() {
+    for meridian in 十二经脉.allCases {
+      let organ = meridian.localizedOrganName(in: .es)
+      let article = organ.hasPrefix("Vejiga") || organ.hasPrefix("Vesícula") ? "de la" : "del"
+      #expect(meridian.localizedName(in: .es) == "Meridiano \(article) \(organ)")
+    }
+  }
+
+  @Test func organNames() {
+    #expect(十二经脉.手厥陰心包经.localizedOrganName(in: .zhHant) == "心包")
+    #expect(十二经脉.手厥陰心包经.localizedOrganName(in: .es) == "Pericardio")
+    #expect(十二经脉.足少陰腎经.localizedOrganName(in: .zhHans) == "肾")
+    #expect(十二经脉.手阳明大腸经.localizedOrganName(in: .es) == "Intestino Grueso")
+    for meridian in 十二经脉.allCases {
+      #expect(meridian.localizedOrganName(in: .zhHant) == meridian.organReference)
+      #expect(meridian.localizedOrganName(in: .en) + " Meridian" == meridian.englishName)
+    }
   }
 }
